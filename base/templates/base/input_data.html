@@ -4,28 +4,90 @@ enter data
 {% endblock %}
 {% block content %}
 
-<h1>enter data template</h1>
+<h1>Enter Map </h1>
+
 
 <div class="container mt-3">
-  <h2>Stacked form</h2>
-  <form action="/action_page.php">
+
+  
+  <form id="regForm" action="">
+
+    <h1>Map:</h1>  
+    <div class="tab" id="set_map_div">
+      Country Name:
+      <p><input placeholder="Country name..." oninput="this.className = ''"></p>
+      cities Number:
+      
+      <p><input type="number" id="cities_number" min="3" placeholder="city number..." 
+        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');this.className = ''"></p>
+    </div>
+    
+    <div id="cities">
+
+    </div>
+    <div id="danger_alert" class="alert d-none alert-danger">
+      please Enter border cities number !
+    </div>
+
+    <!-- One "tab" for each step in the form: -->
+    <!-- <div class="tab">
+      City Name:
+      <p><input placeholder="city name..." oninput="this.className = ''"></p>
+      Distance:
+      <p><input type="number" min="0" placeholder="city name..." oninput="this.className = ''"></p>
+      number border cities :
+      <p><input type="number" min="1" placeholder="city name..." oninput="this.className = ''"></p> 
+    </div> -->
+    
+    
+    
+    <div  id="control_btns" style="overflow:auto;">
+      <div style="float:right;">
+        <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+        <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+      </div>
+    </div>
+    
+
+    <!-- Circles which indicates the steps of the form: -->
+    <div id="steps_div"  style="text-align:center;margin-top:40px;">
+      <span class="step"></span>
+      <!-- <span class="step"></span>
+      <span class="step"></span>
+      <span class="step"></span> -->
+    </div>
+    
+    </form> 
+
+
+
+
+
+
+
+
+  <!-- <form action="/action_page.php">
     {% csrf_token %}
-    <div class="mb-3 mt-3">
-      <label for="email">Email:</label>
-      <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+    <button type="button" onclick="add_new_city()" class="btn btn-primary btn-block">Add City</button>
+    <div class="row">
+        <div class="col-5">
+            <div class="mb-3 mt-3">
+                <label for="city_name0">City Name :</label>
+                <input required type="text" class="form-control" id="city_name0" placeholder="Enter city" name="city">
+              </div>
+        </div>      
+        <div  class="col-2 mb-3 mt-3">
+            <label for="city_Distance0">Distance :</label>
+            <input required type="number" min="0" class="form-control" id="city_Distance0" name="Distance">
+          </div>  
+        <div  class="col-3 mb-3 mt-3">
+            <label for="city_Distance0">Bordered cities number :</label>
+            <input required type="number" min="0" class="form-control" id="city_Distance0" name="bordered_cities_number">
+          </div>  
     </div>
-    <div class="mb-3">
-      <label for="pwd">Password:</label>
-      <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd">
-    </div>
-    <div class="form-check mb-3">
-      <label class="form-check-label">
-        <input class="form-check-input" type="checkbox" name="remember"> Remember me
-      </label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" onclick="" class="btn btn-primary">Next</button>
   </form>
-</div>
+
 
 
 
@@ -33,6 +95,6 @@ enter data
 <form action="/enter_map_data" method="post">
     
 
-</form>
-
+</form> -->
+</div>
 {% endblock %}

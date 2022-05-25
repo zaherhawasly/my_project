@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,12 +9,19 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    
     {% include 'navbar.html' %}
 
     {% block content %}
 
     {% endblock %}
 
+    {% load static %}
+    <script>
+        $.ajaxSetup({
+  data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+});
+    </script>
+
+    <script src="{% static '/js/input_data.js' %}"></script>
 </body>
 </html>
