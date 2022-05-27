@@ -2,20 +2,25 @@
 
 var currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
+var Graph={};
+
 
 function add_border_cities(city_country){
     border_cities_num=$('#border_cities_'+city_country).val();
-    if(border_cities_num!=0 && border_cities_num!=''){
+    if(border_cities_num!=0 && border_cities_num!='' && $('#the_city_name'+currentTab).val()!=''){
+        $('#the_city_name'+currentTab).attr('disabled', 'disabled');
+    $('border_cities_'+city_country).attr('disabled', 'disabled');
         $('#danger_alert').addClass('d-none');
     $('#control_btns').removeClass('d-none');
     $('#add_border_cities_btn'+city_country).remove();
     for(var i=0;i<border_cities_num; i++){
-        $('#the_city_'+city_country).append(
+        $('#the_city'+city_country).append(
         `
-      City Name (${i}):
-      <p><input placeholder="city name..." oninput="this.className = ''"></p>
+      Border City Name (${i+1}):
+      <p><input name="${$('#the_city_name'+currentTab).val()}" placeholder="city name..." oninput="this.className = ''"></p>
       Distance:
-      <p><input type="number" min="0" placeholder="city name..." 
+      <p><input name="Distance${$('#the_city_name'+currentTab).val()}" 
+      type="number" min="0" placeholder="city name..." 
       oninput="validity.valid||(value='');this.className = ''">
       </p>`
         );
@@ -30,20 +35,20 @@ function set_map_form(){
     $('#set_map_div').addClass('d-none');
     $('#steps_div').removeClass('d-none');
     $('#control_btns').removeClass('d-none');
-    for(var i=0;i<cities_number; i++){
+    for(var i=1;i<=cities_number; i++){
         $('#cities').append(
-        `<div id="the_city${i}}" class="tab">
+        `<div id="the_city${i}" class="tab">
       City Name:
-      <p><input placeholder="city name..." oninput="this.className = ''"></p>
+      <p><input id="the_city_name${i}" placeholder="city name..." oninput="this.className = ''"></p>
       Distance:
-      <p><input type="number" min="0" placeholder="city name..." 
+      <p><input id="the_city_dist${i}" type="number" min="0" placeholder="city name..." 
       oninput="validity.valid||(value='');this.className = ''">
       </p>
-      border cities number :
+      border cities number (not zero) :
       <p><input type="number" id="border_cities_${i}" min="1" placeholder="..." 
       oninput="validity.valid||(value='');this.className = '';">
       </p>
-      <button type="button" id="add_border_cities_btn${i}"  onclick="add_border_cities(${i})">add border cities</button>
+      <button type="button" id="add_border_cities_btn${i}"  onclick="add_border_cities(${i})">add border cities number</button>
     </div>`
         );
         $('#steps_div').append('<span class="step"></span>');
@@ -71,7 +76,7 @@ function showTab(n) {
 }
 
 function nextPrev(n) {
-    $('#danger_alert').addClass('d-none');
+    $('#danger_alert').addClass('d-none');// hide alert box
   // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
@@ -81,7 +86,7 @@ function nextPrev(n) {
   // Increase or decrease the current tab by 1:
   currentTab = currentTab + n;
   // if you have reached the end of the form... :
-  if (currentTab >= x.length) {
+  if (currentTab >= x.length && currentTab==1) {
     //...the form gets submitted:
     // document.getElementById("regForm").submit();
     set_map_form();
@@ -90,6 +95,35 @@ function nextPrev(n) {
     $('#control_btns').addClass('d-none');
     return false;
   }
+//   if(currentTab==$('.step').length)
+//   console.log();
+
+  
+  if(currentTab!=$('.step').length)
+  $('#control_btns').addClass('d-none');
+  //create graph
+  if(currentTab!=1){
+    console.log((currentTab-1))
+  boarder_cities=$(`[name=${$('#the_city_name'+(currentTab-1)).val()}]`);
+  city_name=$('#the_city_name'+(currentTab-1)).val();
+  boarder_cities_distance=$(`[name=Distance${$('#the_city_name'+(currentTab-1)).val()}]`);
+//   boarder_cities=document.getElementsByName(`[name=${$('#the_city_name'+(currentTab-1)).val()}]`);
+  console.log(boarder_cities);
+  console.log(boarder_cities_distance);
+  console.log(city_name);
+  boarder_cities.each(element => {
+    border_city=boarder_cities[element].value;
+    border_city_dist=boarder_cities_distance[element].value;
+    //   Graph.$('#the_city_name'+(currentTab-1)).val();
+    console.log(Graph);
+    console.log(Graph[city_name]);
+    if(Graph[city_name]==undefined)
+    Graph[city_name]={};
+    Graph[city_name][border_city]=border_city_dist;
+    console.log(Graph)
+    
+  });
+}
   // Otherwise, display the correct tab:
   showTab(currentTab);
 }

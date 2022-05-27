@@ -15,7 +15,7 @@ enter data
     <h1>Map:</h1>  
     <div class="tab" id="set_map_div">
       Country Name:
-      <p><input placeholder="Country name..." oninput="this.className = ''"></p>
+      <p><input id="country_name" placeholder="Country name..." oninput="this.className = ''"></p>
       cities Number:
       
       <p><input type="number" id="cities_number" min="3" placeholder="city number..." 
@@ -25,8 +25,17 @@ enter data
     <div id="cities">
 
     </div>
+    <br>
     <div id="danger_alert" class="alert d-none alert-danger">
-      please Enter border cities number !
+      <ul>
+        <li>
+          please Enter border cities number (not zero) !
+        </li>
+        <li>
+          please Enter City Name !
+        </li>
+      </ul>
+      
     </div>
 
     <!-- One "tab" for each step in the form: -->
