@@ -1,7 +1,7 @@
 from multiprocessing import context
 from queue import PriorityQueue
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
 
@@ -14,8 +14,9 @@ def show_best_way(request):
     source=request.POST['source']
     destination=request.POST['destination']
     MyMap=request.POST['MyMap']
+    return JsonResponse([source,destination,MyMap],safe=False)
 
-    
+
     
 
 def a_star(source, destination):
