@@ -100,10 +100,11 @@ function nextPrev(n) {
 
   //create graph
   if(currentTab!=1){
-  boarder_cities=$(`[name=${$('#the_city_name'+(currentTab-1)).val()}]`);
+  boarder_cities=$(`[name="${String($('#the_city_name'+(currentTab-1)).val())}"]`);
   city_name=$('#the_city_name'+(currentTab-1)).val();
+  my_citiies_array.push(city_name);
   city_distance=$('#the_city_dist'+(currentTab-1)).val();
-  boarder_cities_distance=$(`[name=Distance${$('#the_city_name'+(currentTab-1)).val()}]`);
+  boarder_cities_distance=$(`[name="Distance${String($('#the_city_name'+(currentTab-1)).val())}"]`);
 //   boarder_cities=document.getElementsByName(`[name=${$('#the_city_name'+(currentTab-1)).val()}]`);
   console.log(boarder_cities);
   console.log(boarder_cities_distance);
@@ -114,9 +115,8 @@ function nextPrev(n) {
     //   Graph.$('#the_city_name'+(currentTab-1)).val();
     if(my_map[city_name]==undefined)
     my_map[city_name]={};
-    my_map[city_name][border_city]=border_city_dist;
-    my_citiies[city_name]=city_distance;
-    my_citiies_array.push(city_name);
+    my_map[String(city_name)][String(border_city)]=parseInt(border_city_dist);
+    my_citiies[String(city_name)]=parseInt(city_distance);
     console.log(my_map);
     console.log(my_citiies);
     
@@ -159,7 +159,7 @@ if(currentTab!=$('.step').length)
 function enter_dist(source_city){
     $('#dest_div').html(`
     Destination City Name:
-    <select onchange="send_map()"
+    <select onchange="send_map(this.value)"
     class="form-control" id="dest_city" placeholder="Destination City Name...">
     <option  disabled selected>select Destenation City Name...</option>
       </select>
@@ -172,9 +172,12 @@ function enter_dist(source_city){
 }
 
 // fire on submit
-function send_map(){
+function send_map(city_goul){
+  my_citiies[city_goul]=0
+  
     source=$('#source_city').val();
     destination=$('#dest_city').val();
+    
      $.ajax({
              type: 'POST',
              url: "test_graph/",
@@ -183,18 +186,23 @@ function send_map(){
                  "MyMap": JSON.stringify(my_map),
                  "source": JSON.stringify(source),
                  "destination": JSON.stringify(destination),
+                 "myy_straight_line": JSON.stringify(my_citiies),
             },
               success: function(result){
-                console.log('straight_line');
-                console.log(my_citiies);
-                console.log('******************');
-                console.log('******************');
-                console.log(result[0]);
-                console.log(result[1]);
-                console.log(result[2]);
-                console.log('******************');
                 console.log(result);
+                if(result=='CITY DOES NOT EXIST.')
+                $('#best_rout').html('<p> Can\'t find the path  </p>')
+                else{
+                  result=JSON.parse(result);
 
+                    $('#best_rout').html(
+                      '<p>min of total heuristic value = '+result[0]+' </p>'+
+                      '<p>total min cost = '+result[1]+' </p>'+
+                      'Route:'+
+                      '<p>min of total heuristic value = '+result[2]+' </p>'
+                      )
+                  
+                }
 
           }});
 }
